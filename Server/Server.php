@@ -25,4 +25,29 @@ class Server
         $this->user = $user;
         $this->dir = $dir;
     }
+    
+    public function getPort()
+    {
+        return $this->port;
+    }
+    
+    public function getHost()
+    {
+        return $this->host;
+    }
+    
+    public function getDir()
+    {
+        return $this->dir;
+    }
+    
+    public function getUser()
+    {
+        return $this->user;
+    }
+    
+    public function __toString()
+    {
+        return sprintf('%s@%s:%s', $this->user, $this->host, $this->dir);
+    }
 }
