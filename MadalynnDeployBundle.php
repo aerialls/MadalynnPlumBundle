@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\SyncBundle;
+namespace Madalynn\DeployBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MadalynnSyncBundle extends Bundle
+class MadalynnDeployBundle extends Bundle
 {
 }
