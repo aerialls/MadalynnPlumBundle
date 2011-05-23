@@ -9,6 +9,6 @@
     </parameters>
 
     <services>
-        <service id="gravatar.api" class="%deployer.manager.class%" />
+        <service id="deployer" class="%deployer.manager.class%" />
     </services>
 </container>
