@@ -28,19 +28,11 @@ class MadalynnDeployExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
         
-        $servers = array();
-        
-        foreach ($config as $key => $server) {
-            $tmp = new Server($server['host'], $server['user'], $server['dir'], $server['port']);
-            
-            $serveurs[$key] = $tmp;
-        }
-        
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
         $loader->load('services.xml');
         
-        $container->getDefinition('deployer')->addArgument($servers);
+        $container->getDefinition('deployer')->addArgument($config);
     }
     
     public function getNamespace()
