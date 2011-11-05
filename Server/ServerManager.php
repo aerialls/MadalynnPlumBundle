@@ -14,7 +14,7 @@ namespace Madalynn\DeployBundle\Server;
 class ServerManager
 {
     protected $servers;
-    
+
     public function __construct()
     {
         $this->servers = array();
@@ -25,19 +25,19 @@ class ServerManager
         if (true === array_key_exists($key, $this->servers)) {
             throw new \InvalidArgumentException(sprintf('The key "%s" is already registered', $key));
         }
-        
+
         $this->servers[$key] = $server;
     }
-    
-    public function get($key) 
+
+    public function get($key)
     {
         if (false === array_key_exists($key, $this->servers)) {
             return null;
         }
-        
+
         return $this->servers[$key];
     }
-    
+
     public function has($key)
     {
         return array_key_exists($key, $this->servers);

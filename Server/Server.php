@@ -17,44 +17,44 @@ class Server
     protected $port;
     protected $user;
     protected $dir;
-    
+
     public function __construct($host, $user, $dir, $port = 22)
     {
         if (substr($dir, -1) != '/') {
             $dir .= '/';
         }
-        
+
         $this->host = $host;
         $this->port = $port;
         $this->user = $user;
         $this->dir = $dir;
     }
-    
+
     public function getPort()
     {
         return $this->port;
     }
-    
+
     public function getHost()
     {
         return $this->host;
     }
-    
+
     public function getDir()
     {
         return $this->dir;
     }
-    
+
     public function getSSHInformations()
     {
         return sprintf('"ssh -p%d"', $this->port);
     }
-    
+
     public function getUser()
     {
         return $this->user;
     }
-    
+
     public function getLoginInformations()
     {
         return sprintf('%s@%s:%s', $this->user, $this->host, $this->dir);

@@ -27,19 +27,19 @@ class MadalynnDeployExtension extends Extension
         $configuration = new Configuration();
 
         $config = $processor->processConfiguration($configuration, $configs);
-        
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        
+
         $loader->load('services.xml');
-        
+
         $container->getDefinition('deployer')->addArgument($config);
     }
-    
+
     public function getNamespace()
     {
         return 'http://www.madalynn.eu/schema/dic/deploy';
     }
-    
+
     public function getAlias()
     {
         return 'madalynn_deploy';
