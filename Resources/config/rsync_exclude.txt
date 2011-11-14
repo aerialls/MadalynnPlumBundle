@@ -1,0 +1,7 @@
+.svn
+.git
+/web/uploads/*
+/app/cache/*
+/app/logs/*
+/app/config/propel.ini
+/app/config/databases.yml

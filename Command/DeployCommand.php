@@ -76,11 +76,13 @@ EOF
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
 	$options = $input->getOption('rsync-options');
         
-        $command = sprintf('rsync %s %s -e %s ./ %s',
+        
+        $command = sprintf('rsync %s %s -e %s ./ %s  %s',
                 $dryRun, 
                 $options, 
                 $server->getSSHInformations(), 
-                $server->getLoginInformations()
+                $server->getLoginInformations(),
+                $server->getRsyncExclude()
         );
         
         $output->writeln($command);
