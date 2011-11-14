@@ -4,4 +4,4 @@
 /app/cache/*
 /app/logs/*
 /app/config/propel.ini
-/app/config/databases.yml
+/app/config/parameters.ini
