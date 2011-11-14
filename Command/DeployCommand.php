@@ -59,8 +59,6 @@ EOF
     {
         $name = $input->getArgument('server');
         
-        $output->writeln($text);
-        
         $deployer = $this->getContainer()->get('deployer');
         
         $serverName = $input->getArgument('server');
