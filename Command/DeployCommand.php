@@ -59,16 +59,6 @@ EOF
     {
         $name = $input->getArgument('server');
         
-	if ($name) {
-            $text = 'Hello '.$name;
-        } else {
-            $text = 'Hello';
-        }
-
-        if ($input->getOption('go')) {
-            $text = strtoupper($text);
-        }
-
         $output->writeln($text);
         
         $deployer = $this->getContainer()->get('deployer');
