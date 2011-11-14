@@ -59,29 +59,28 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $deployer = $this->container->get('deployer');
-        
+
         $serverName = $input->getArgument('server');
-        
+
         if (false === $deployer->hasServer($serverName)) {
             throw new \InvalidArgumentException(sprintf('The server "%s" does not exist.', $serverName));
         }
-        
+
         $server = $deployer->getServer($serverName);
-        
+
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
         $options = $input->getOption('rsync-options');
-        
+
         $command = sprintf('rsync %s %s -e %s ../ %s',
-                $dryRun, 
-                $options, 
-                $server->getSSHInformations(), 
+                $dryRun,
+                $options,
+                $server->getSSHInformations(),
                 $server->getLoginInformations()
         );
-        
+
         $process = new Process($command);
-        
-        die('lol');
-        
+
+        //FIXME: Not working for the moment...
         $process->run(function($type, $line) use ($output) {
             $output->writeln('$line');
         });
