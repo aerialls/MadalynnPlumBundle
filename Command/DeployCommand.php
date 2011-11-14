@@ -11,25 +11,24 @@
 
 namespace Madalynn\DeployBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class DeployCommand extends Command
+class DeployCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
+        
         $this
-            ->setDefinition(array(
-                new InputArgument('server', InputArgument::REQUIRED, 'The server name'),
-                new InputOption('go', null, InputOption::VALUE_NONE, 'Do the deployment'),
-                new InputOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress')
-            ))
             ->setName('project:deploy')
             ->setDescription('Deploys a project to another server')
+            ->addArgument('server', InputArgument::REQUIRED, 'The server name')
+            ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
+            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress')
             ->setHelp(<<<EOF
 The <info>project:deploy</info> command deploys a project on a server:
 
@@ -58,32 +57,42 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $deployer = $this->container->get('deployer');
-
+        $name = $input->getArgument('server');
+        
+        $deployer = $this->getContainer()->get('deployer');
+        
         $serverName = $input->getArgument('server');
-
+        
+	$output->writeln($serverName);
+        
         if (false === $deployer->hasServer($serverName)) {
             throw new \InvalidArgumentException(sprintf('The server "%s" does not exist.', $serverName));
         }
-
+        
+        $output->writeln('OK LETS DANCE!!!');
+        
         $server = $deployer->getServer($serverName);
-
+        
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
-        $options = $input->getOption('rsync-options');
-
-        $command = sprintf('rsync %s %s -e %s ../ %s',
-                $dryRun,
-                $options,
-                $server->getSSHInformations(),
-                $server->getLoginInformations()
+	$options = $input->getOption('rsync-options');
+        
+        
+        $command = sprintf('rsync %s %s -e %s ./ %s  %s',
+                $dryRun, 
+                $options, 
+                $server->getSSHInformations(), 
+                $server->getLoginInformations(),
+                $server->getRsyncExclude()
         );
-
+        
+        $output->writeln($command);
+        
         $process = new Process($command);
-
-        //FIXME: Not working for the moment...
+        
         $process->run(function($type, $line) use ($output) {
-            $output->writeln('$line');
+            $output->writeln($line);
         });
     }
+    
 }
 
