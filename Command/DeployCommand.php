@@ -22,7 +22,6 @@ class DeployCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        
         $this
             ->setName('project:deploy')
             ->setDescription('Deploys a project to another server')
@@ -58,41 +57,34 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('server');
-        
         $deployer = $this->getContainer()->get('deployer');
-        
         $serverName = $input->getArgument('server');
-        
-	$output->writeln($serverName);
-        
+
+        $output->writeln(sprintf('Starting rsync to %s', $serverName));
+
         if (false === $deployer->hasServer($serverName)) {
             throw new \InvalidArgumentException(sprintf('The server "%s" does not exist.', $serverName));
         }
-        
-        $output->writeln('OK LETS DANCE!!!');
-        
+
         $server = $deployer->getServer($serverName);
-        
+
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
-	$options = $input->getOption('rsync-options');
-        
-        
+        $options = $input->getOption('rsync-options');
+
         $command = sprintf('rsync %s %s -e %s ./ %s  %s',
-                $dryRun, 
-                $options, 
-                $server->getSSHInformations(), 
+                $dryRun,
+                $options,
+                $server->getSSHInformations(),
                 $server->getLoginInformations(),
                 $server->getRsyncExclude()
         );
-        
-        $output->writeln($command);
-        
+
         $process = new Process($command);
-        
+
+        // Go!
         $process->run(function($type, $line) use ($output) {
             $output->writeln($line);
         });
     }
-    
 }
 

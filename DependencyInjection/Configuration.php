@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('port')->defaultValue(22)->end()
                     ->scalarNode('user')->isRequired()->end()
                     ->scalarNode('dir')->isRequired()->end()
-                    ->scalarNode('exclude-from')->defaultValue('vendor/bundles/Madalynn/DeployBundle/Resources/config/rsync_exclude.txt')->end()
+                    ->scalarNode('exclude-from')->defaultValue(__DIR__.'/../Resources/config/rsync_exclude.txt')->end()
                 ->end()
             ->end()
         ->end();

@@ -17,9 +17,9 @@ class Server
     protected $port;
     protected $user;
     protected $dir;
-    protected $exclude_file;
+    protected $excludeFromPath;
 
-    public function __construct($host, $user, $dir, $port = 22, $exclude_from)
+    public function __construct($host, $user, $dir, $port, $excludeFromPath)
     {
         if (substr($dir, -1) != '/') {
             $dir .= '/';
@@ -29,7 +29,7 @@ class Server
         $this->port = $port;
         $this->user = $user;
         $this->dir = $dir;
-        $this->exclude_from = $exclude_from;
+        $this->excludeFromPath = $excludeFromPath;
     }
 
     public function getPort()
@@ -46,10 +46,10 @@ class Server
     {
         return $this->dir;
     }
-    
-    public function getExcludeFrom()
+
+    public function getExcludeFromPath()
     {
-        return $this->exclude_from;
+        return $this->excludeFromPath;
     }
 
     public function getSSHInformations()
@@ -66,13 +66,14 @@ class Server
     {
         return sprintf('%s@%s:%s', $this->user, $this->host, $this->dir);
     }
-    
-    
+
+
     public function getRsyncExclude()
     {
-        if ($this->getExcludeFrom()) {
-            return sprintf('--exclude-from \'%s\'', $this->getExcludeFrom());
+        if ($this->excludeFromPath) {
+            return sprintf('--exclude-from \'%s\'', $this->excludeFromPath);
         }
+
         return '';
     }
 }

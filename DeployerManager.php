@@ -22,10 +22,8 @@ class DeployerManager
     {
         $this->serverManager = new ServerManager();
 
-        foreach ($config as $key => $server)
-        {
+        foreach ($config as $key => $server){
             $tmp = new Server($server['host'], $server['user'], $server['dir'], $server['port'], $server['exclude-from']);
-
             $this->addServer($key, $tmp);
         }
     }
