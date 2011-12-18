@@ -60,16 +60,14 @@ EOF
         $deployer = $this->getContainer()->get('deployer');
         $serverName = $input->getArgument('server');
 
-        $output->writeln(sprintf('Starting rsync to %s', $serverName));
-
         if (false === $deployer->hasServer($serverName)) {
             throw new \InvalidArgumentException(sprintf('The server "%s" does not exist.', $serverName));
         }
 
-        $server = $deployer->getServer($serverName);
-
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
         $options = $input->getOption('rsync-options');
+
+        $server = $deployer->getServer($serverName);
 
         $command = sprintf('rsync %s %s -e %s ./ %s  %s',
                 $dryRun,
@@ -79,12 +77,14 @@ EOF
                 $server->getRsyncExclude()
         );
 
-        $process = new Process($command);
 
-        // Go!
-        $process->run(function($type, $line) use ($output) {
-            $output->writeln($line);
-        });
+        $dryRunText = ($dryRun) ? '<comment>(dry run mode)</comment>' : '';
+        $output->writeln(sprintf('Starting rsync to <info>%s</info> %s', $serverName, $dryRunText));
+
+        $process = new Process($command);
+        $process->run();
+
+        $output->writeln(sprintf('Successfully rsync to <info>%s</info>', $serverName));
     }
 }
 

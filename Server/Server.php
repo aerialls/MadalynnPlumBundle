@@ -29,7 +29,7 @@ class Server
         $this->port = $port;
         $this->user = $user;
         $this->dir = $dir;
-        $this->excludeFromPath = $excludeFromPath;
+        $this->excludeFromPath = realpath($excludeFromPath);
     }
 
     public function getPort()
