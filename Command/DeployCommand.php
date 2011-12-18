@@ -33,17 +33,18 @@ The <info>project:deploy</info> command deploys a project on a server:
 
   <info>php app/console project:deploy production</info>
 
-The server must be configured in <comment>app/config/config.yml</comment>:
+The server must be configured in <comment>app/config/config_dev.yml</comment>:
 
-  madalynn_deploy
-    host: www.example.com
-    port: 22
-    user: fabien
-    dir: /var/www/sfblog/
+    madalynn_deploy:
+        production:
+            host: www.mywebsite.com
+            port: 22
+            user: julien
+            dir: /var/www/sfblog/
 
 To automate the deployment, the task uses rsync over SSH.
 You must configure SSH access with a key or configure the password
-in <comment>app/config/config.yml</comment>.
+in <comment>app/config/config_dev.yml</comment>.
 
 By default, the task is in dry-mode. To do a real deployment, you
 must pass the <comment>--go</comment> option:
@@ -76,7 +77,6 @@ EOF
                 $server->getLoginInformations(),
                 $server->getRsyncExclude()
         );
-
 
         $dryRunText = ($dryRun) ? '<comment>(dry run mode)</comment>' : '';
         $output->writeln(sprintf('Starting rsync to <info>%s</info> %s', $serverName, $dryRunText));
