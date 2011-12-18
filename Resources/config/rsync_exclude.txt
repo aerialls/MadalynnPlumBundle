@@ -1,7 +1,21 @@
-.svn
-.git
-/web/uploads/*
+# Project files
+/app/config/parameters.ini
+/app/config/parameters.yml
 /app/cache/*
 /app/logs/*
-/app/config/propel.ini
-/app/config/parameters.ini
+/web/app_dev.php
+/web/css/*
+/web/bundles/*
+/web/js/*
+/web/uploads/*
+/web/config.php
+
+# SCM files
+.arch-params
+.bzr
+_darcs
+.git
+.hg
+.monotone
+.svn
+CVS
