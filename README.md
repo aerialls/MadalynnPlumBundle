@@ -2,7 +2,7 @@
 
 ## Installation and configuration
 
-If you use a `deps` file juste add:
+If you use a `deps` file just add:
 
     [MadalynnDeployBundle]
         git=https://github.com/aerialls/MadalynnDeployBundle.git
@@ -28,7 +28,7 @@ And add the MadalynnDeployBundle to your Kernel *for the dev/test environment on
         $bundles[] = new Madalynn\DeployBundle\MadalynnDeployBundle();
     }
 
-## Configuration exemple
+## Configuration example
 
     # DeployBundle Configuration
     madalynn_deploy:
