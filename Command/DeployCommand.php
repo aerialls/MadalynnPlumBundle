@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\DeployBundle\Command;
+namespace Madalynn\Bundle\DeployBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

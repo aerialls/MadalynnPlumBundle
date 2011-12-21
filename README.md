@@ -6,11 +6,11 @@ If you use a `deps` file just add:
 
     [MadalynnDeployBundle]
         git=https://github.com/aerialls/MadalynnDeployBundle.git
-        target=bundles/Madalynn/DeployBundle
+        target=bundles/Madalynn/Bundle/DeployBundle
 
 Or by using Git:
 
-    git clone https://github.com/aerialls/MadalynnDeployBundle.git vendor/bundles/Madalynn/DeployBundle
+    git clone https://github.com/aerialls/MadalynnDeployBundle.git vendor/bundles/Madalynn/Bundle/DeployBundle
 
 You need to add to your `autoload.php`:
 
@@ -25,7 +25,7 @@ And add the MadalynnDeployBundle to your Kernel *for the dev/test environment on
     // app/AppKernel.php
     if (in_array($this->getEnvironment(), array('dev', 'test'))) {
         // ...
-        $bundles[] = new Madalynn\DeployBundle\MadalynnDeployBundle();
+        $bundles[] = new Madalynn\Bundle\DeployBundle\MadalynnDeployBundle();
     }
 
 ## Configuration example

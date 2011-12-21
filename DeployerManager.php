@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\DeployBundle;
+namespace Madalynn\Bundle\DeployBundle;
 
-use Madalynn\DeployBundle\Server\ServerManager;
-use Madalynn\DeployBundle\Server\Server;
+use Madalynn\Bundle\DeployBundle\Server\ServerManager;
+use Madalynn\Bundle\DeployBundle\Server\Server;
 
 class DeployerManager
 {

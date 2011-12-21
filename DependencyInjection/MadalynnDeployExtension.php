@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\DeployBundle\DependencyInjection;
+namespace Madalynn\Bundle\DeployBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
-use Madalynn\DeployBundle\Server\Server;
+use Madalynn\Bundle\DeployBundle\Server\Server;
 
 class MadalynnDeployExtension extends Extension
 {

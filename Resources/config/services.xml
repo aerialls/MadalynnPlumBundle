@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="deployer.manager.class">Madalynn\DeployBundle\DeployerManager</parameter>
+        <parameter key="deployer.manager.class">Madalynn\Bundle\DeployBundle\DeployerManager</parameter>
     </parameters>
 
     <services>

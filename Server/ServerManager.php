@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\DeployBundle\Server;
+namespace Madalynn\Bundle\DeployBundle\Server;
 
 class ServerManager
 {

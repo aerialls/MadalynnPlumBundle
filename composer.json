@@ -20,7 +20,7 @@
         "symfony/framework-bundle": "2.*"
     },
     "autoload": {
-        "psr-0": { "Madalynn\\DeployBundle": "" }
+        "psr-0": { "Madalynn\\Bundle\\DeployBundle": "" }
     },
-    "target-dir": "Madalynn/DeployBundle"
+    "target-dir": "Madalynn/Bundle/DeployBundle"
 }

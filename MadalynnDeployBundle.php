@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\DeployBundle;
+namespace Madalynn\Bundle\DeployBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
