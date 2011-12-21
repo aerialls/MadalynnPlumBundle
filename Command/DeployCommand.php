@@ -58,7 +58,7 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('server');
-        $deployer = $this->getContainer()->get('deployer');
+        $deployer = $this->getContainer()->get('madalynn.deployer');
         $serverName = $input->getArgument('server');
 
         if (false === $deployer->hasServer($serverName)) {

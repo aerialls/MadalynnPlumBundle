@@ -32,7 +32,7 @@ class MadalynnDeployExtension extends Extension
 
         $loader->load('services.xml');
 
-        $container->getDefinition('deployer')->addArgument($config);
+        $container->getDefinition('madalynn.deployer')->addArgument($config);
     }
 
     public function getNamespace()
