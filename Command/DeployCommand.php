@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class DeployCommand extends ContainerAwareCommand
 {
@@ -26,8 +25,7 @@ class DeployCommand extends ContainerAwareCommand
             ->setName('project:deploy')
             ->setDescription('Deploys a project to another server')
             ->addArgument('server', InputArgument::REQUIRED, 'The server name')
-            ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
-            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress')
+            ->addArgument('deployer', InputArgument::OPTIONAL, 'The deployer name', 'rsync')
             ->setHelp(<<<EOF
 The <info>project:deploy</info> command deploys a project on a server:
 
@@ -36,20 +34,16 @@ The <info>project:deploy</info> command deploys a project on a server:
 The server must be configured in <comment>app/config/config_dev.yml</comment>:
 
     madalynn_deploy:
-        production:
-            host: www.mywebsite.com
-            port: 22
-            user: julien
-            dir: /var/www/sfblog/
+        servers:
+            production:
+                host: www.mywebsite.com
+                port: 22
+                user: julien
+                dir: /var/www/sfblog/
 
 To automate the deployment, the task uses rsync over SSH.
 You must configure SSH access with a key or configure the password
 in <comment>app/config/config_dev.yml</comment>.
-
-By default, the task is in dry-mode. To do a real deployment, you
-must pass the <comment>--go</comment> option:
-
-  <info>php app/console project:deploy --go production</info>
 EOF
             )
         ;
@@ -57,34 +51,23 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name = $input->getArgument('server');
-        $deployer = $this->getContainer()->get('madalynn.deployer');
-        $serverName = $input->getArgument('server');
+        $server   = $input->getArgument('server');
+        $deployer = $input->getArgument('deployer');
+        $plum     = $this->getContainer()->get('madalynn.plum');
+        $options  = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
 
-        if (false === $deployer->hasServer($serverName)) {
-            throw new \InvalidArgumentException(sprintf('The server "%s" does not exist.', $serverName));
+        if (isset($options['dry_run']) && $options['dry_run']) {
+            $dryrun = '<comment>(dry run mode)</comment>';
+        } else {
+            $dryrun = '';
         }
 
-        $dryRun = $input->getOption('go') ? '' : '--dry-run';
-        $options = $input->getOption('rsync-options');
+        $output->writeln(sprintf('Starting rsync to <info>%s</info> %s', $server, $dryrun));
 
-        $server = $deployer->getServer($serverName);
+        // Let's go!
+        $plum->deploy($server, $deployer, $options);
 
-        $command = sprintf('rsync %s %s -e %s ./ %s  %s',
-                $dryRun,
-                $options,
-                $server->getSSHInformations(),
-                $server->getLoginInformations(),
-                $server->getRsyncExclude()
-        );
-
-        $dryRunText = ($dryRun) ? '<comment>(dry run mode)</comment>' : '';
-        $output->writeln(sprintf('Starting rsync to <info>%s</info> %s', $serverName, $dryRunText));
-
-        $process = new Process($command);
-        $process->run();
-
-        $output->writeln(sprintf('Successfully rsync to <info>%s</info>', $serverName));
+        $output->writeln(sprintf('Successfully rsync to <info>%s</info>', $server));
     }
 }
 

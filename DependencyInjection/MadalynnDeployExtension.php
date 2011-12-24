@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
-use Madalynn\Bundle\DeployBundle\Server\Server;
+use Plum\Server\Server;
 
 class MadalynnDeployExtension extends Extension
 {
@@ -29,10 +29,41 @@ class MadalynnDeployExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
         $loader->load('services.xml');
 
-        $container->getDefinition('madalynn.deployer')->addArgument($config);
+        $plum = $container->getDefinition('madalynn.plum');
+
+        $deployers = $config['deployers'];
+        if (0 === count($deployers)) {
+            throw new \RuntimeException('You must add at least one deployer.');
+        }
+
+        foreach($deployers as $deployer) {
+            $obj  = new $deployer();
+            $name = 'plum.deployer.' . $obj->getName();
+
+            $def = $container->register($name, $deployer);
+            $def->setPublic(false);
+
+            $plum->addMethodCall('registerDeployer', array($container->findDefinition($name)));
+        }
+
+        $servers = $config['servers'];
+        foreach($servers as $server => $value) {
+            $name = 'plum.server.' . $server;
+
+            $def = $container->register($name, 'Plum\\Server\\Server');
+            $def->addArgument($value['host']);
+            $def->addArgument($value['user']);
+            $def->addArgument($value['dir']);
+            $def->addArgument($value['port']);
+            $def->setPublic(false);
+
+            $plum->addMethodCall('addServer', array($server, $container->findDefinition($name)));
+
+            // Server options
+            $container->setParameter('plum.server.' . $server . '.options', $value['options']);
+        }
     }
 
     public function getNamespace()

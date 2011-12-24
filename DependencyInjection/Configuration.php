@@ -23,17 +23,36 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('madalynn_deploy', 'array');
 
         $rootNode
-            ->useAttributeAsKey('name')
-            ->prototype('array')
-                ->children()
-                    ->scalarNode('host')->isRequired()->end()
-                    ->scalarNode('port')->defaultValue(22)->end()
-                    ->scalarNode('user')->isRequired()->end()
-                    ->scalarNode('dir')->isRequired()->end()
-                    ->scalarNode('exclude-from')->defaultValue(__DIR__.'/../Resources/config/rsync_exclude.txt')->end()
+            ->children()
+                ->arrayNode('deployers')
+                    ->addDefaultsIfNotSet()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')
+                        ->validate()
+                            ->ifTrue(function ($v) {
+                                $class = new \ReflectionClass($v);
+
+                                return !$class->implementsInterface('Plum\Deployer\DeployerInterface');
+                            })
+                            ->thenInvalid('The deployer %s must implements the Plum\Deployer\DeployerInterface')
+                        ->end()
+                    ->end()
                 ->end()
-            ->end()
-        ->end();
+                ->arrayNode('servers')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                    ->children()
+                        ->scalarNode('host')->isRequired()->end()
+                        ->scalarNode('port')->defaultValue(22)->end()
+                        ->scalarNode('user')->isRequired()->end()
+                        ->scalarNode('dir')->isRequired()->end()
+                        ->arrayNode('options')
+                            ->useAttributeAsKey('name')
+                            ->prototype('variable')
+                            ->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }
