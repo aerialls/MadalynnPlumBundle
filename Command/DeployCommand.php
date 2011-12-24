@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\Bundle\DeployBundle\Command;
+namespace Madalynn\Bundle\PlumBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +22,7 @@ class DeployCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('project:deploy')
+            ->setName('plum:deploy')
             ->setDescription('Deploys a project to another server')
             ->addArgument('server', InputArgument::REQUIRED, 'The server name')
             ->addArgument('deployer', InputArgument::OPTIONAL, 'The deployer name', 'rsync')
@@ -33,7 +33,9 @@ The <info>project:deploy</info> command deploys a project on a server:
 
 The server must be configured in <comment>app/config/config_dev.yml</comment>:
 
-    madalynn_deploy:
+    madalynn_plum:
+        deployers:
+            - Plum\Deployer\RsyncDeployer
         servers:
             production:
                 host: www.mywebsite.com

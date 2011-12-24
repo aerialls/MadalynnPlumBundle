@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\Bundle\DeployBundle\DependencyInjection;
+namespace Madalynn\Bundle\PlumBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('madalynn_deploy', 'array');
+        $rootNode = $treeBuilder->root('madalynn_plum', 'array');
 
         $rootNode
             ->children()

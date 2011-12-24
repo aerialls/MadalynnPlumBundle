@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\Bundle\DeployBundle\DependencyInjection;
+namespace Madalynn\Bundle\PlumBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -19,7 +19,7 @@ use Symfony\Component\Config\FileLocator;
 
 use Plum\Server\Server;
 
-class MadalynnDeployExtension extends Extension
+class MadalynnPlumExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -73,6 +73,6 @@ class MadalynnDeployExtension extends Extension
 
     public function getAlias()
     {
-        return 'madalynn_deploy';
+        return 'madalynn_plum';
     }
 }

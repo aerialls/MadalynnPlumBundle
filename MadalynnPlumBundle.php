@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Madalynn\Bundle\DeployBundle;
+namespace Madalynn\Bundle\PlumBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MadalynnDeployBundle extends Bundle
+class MadalynnPlumBundle extends Bundle
 {
 }

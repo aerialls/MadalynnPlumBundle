@@ -1,6 +1,6 @@
 {
-    "name": "madalynn/deploy-bundle",
-    "description": "A Symfony2 rsync bundle.",
+    "name": "madalynn/plum-bundle",
+    "description": "A Symfony2 deploy bundle.",
     "keywords": ["rsync", "deploy"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -21,7 +21,7 @@
         "symfony/framework-bundle": "2.*"
     },
     "autoload": {
-        "psr-0": { "Madalynn\\Bundle\\DeployBundle": "" }
+        "psr-0": { "Madalynn\\Bundle\\PlumBundle": "" }
     },
-    "target-dir": "Madalynn/Bundle/DeployBundle"
+    "target-dir": "Madalynn/Bundle/PlumBundle"
 }

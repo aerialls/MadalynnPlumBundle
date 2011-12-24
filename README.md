@@ -30,7 +30,7 @@ And add the MadalynnDeployBundle to your Kernel *for the dev/test environment on
     // app/AppKernel.php
     if (in_array($this->getEnvironment(), array('dev', 'test'))) {
         // ...
-        $bundles[] = new Madalynn\Bundle\DeployBundle\MadalynnDeployBundle();
+        $bundles[] = new Madalynn\Bundle\PlumBundle\MadalynnDeployBundle();
     }
 
 ## Configuration example
@@ -59,4 +59,4 @@ And add the MadalynnDeployBundle to your Kernel *for the dev/test environment on
 
 You can specify a custom deployer
 
-    php app/console project:deploy --deployer=rsync production
+    php app/console project:deploy production rsync
