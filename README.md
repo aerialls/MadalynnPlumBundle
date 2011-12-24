@@ -1,4 +1,6 @@
-# MadalynnDeployBundle
+# MadalynPlumBundle
+
+The PlumBundle is a deploy bundle using several deployers.
 
 ## Installation and configuration
 
@@ -7,13 +9,13 @@ If you use a `deps` file just add:
     [plum]
         git=https://github.com/aerialls/Plum.git
 
-    [MadalynnDeployBundle]
-        git=https://github.com/aerialls/MadalynnDeployBundle.git
-        target=bundles/Madalynn/Bundle/DeployBundle
+    [MadalynnPlumBundle]
+        git=https://github.com/aerialls/MadalynnPlumBundle.git
+        target=bundles/Madalynn/Bundle/PlumBundle
 
 Or by using Git:
 
-    git clone https://github.com/aerialls/MadalynnDeployBundle.git vendor/bundles/Madalynn/Bundle/DeployBundle
+    git clone https://github.com/aerialls/MadalynnPlumBundle.git vendor/bundles/Madalynn/Bundle/PlumBundle
     git clone https://github.com/aerialls/Plum.git vendor/plum
 
 You need to add to your `autoload.php`:
@@ -25,20 +27,21 @@ You need to add to your `autoload.php`:
         'Plum'     => __DIR__.'/../vendor/plum/src'
     ));
 
-And add the MadalynnDeployBundle to your Kernel *for the dev/test environment only*.
+And add the MadalynnPlumBundle to your Kernel *for the dev/test environment only*.
 
     // app/AppKernel.php
     if (in_array($this->getEnvironment(), array('dev', 'test'))) {
         // ...
-        $bundles[] = new Madalynn\Bundle\PlumBundle\MadalynnDeployBundle();
+        $bundles[] = new Madalynn\Bundle\PlumBundle\MadalynnPlumBundle();
     }
 
 ## Configuration example
 
-    # DeployBundle Configuration
-    madalynn_deploy:
+    # PlumBundle Configuration
+    madalynn_plum:
         deployers:
             - Plum\Deployer\RsyncDeployer
+            - Acme\Deployer\MyCustomDeployer
         servers:
             production:
                 host: prod.mywebsite.com
@@ -53,10 +56,12 @@ And add the MadalynnDeployBundle to your Kernel *for the dev/test environment on
                 user: webuser
                 dir: /var/www/mywebsite2
 
+You can add your own deployer by using the `Plum\Deployer\DeployerInterface`
+
 # Start a deploy
 
-    php app/console project:deploy production
+    php app/console plum:deploy production
 
-You can specify a custom deployer
+You can specify a custom deployer via an extra parameter
 
-    php app/console project:deploy production rsync
+    php app/console plum:deploy production rsync
