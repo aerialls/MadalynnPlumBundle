@@ -63,7 +63,7 @@ class MadalynnPlumExtension extends Extension
             $plum->addMethodCall('addServer', array($server, $container->findDefinition($name)));
 
             // Server options
-            $container->setParameter('plum.server.' . $server . '.options', $value['options']);
+            $container->setParameter('plum.server.' . $server . '.options', $s['options']);
         }
     }
 
