@@ -49,14 +49,15 @@ class MadalynnPlumExtension extends Extension
         }
 
         $servers = $config['servers'];
-        foreach($servers as $server => $value) {
+        foreach($servers as $server => $s) {
             $name = 'plum.server.' . $server;
 
             $def = $container->register($name, 'Plum\\Server\\Server');
-            $def->addArgument($value['host']);
-            $def->addArgument($value['user']);
-            $def->addArgument($value['dir']);
-            $def->addArgument($value['port']);
+            $def->addArgument($s['host']);
+            $def->addArgument($s['user']);
+            $def->addArgument($s['dir']);
+            $def->addArgument($s['password']);
+            $def->addArgument($s['port']);
             $def->setPublic(false);
 
             $plum->addMethodCall('addServer', array($server, $container->findDefinition($name)));
@@ -68,7 +69,7 @@ class MadalynnPlumExtension extends Extension
 
     public function getNamespace()
     {
-        return 'http://www.madalynn.eu/schema/dic/deploy';
+        return 'http://www.madalynn.eu/schema/dic/plum';
     }
 
     public function getAlias()
