@@ -17,6 +17,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Plum\Plum;
+
 class DeployCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -25,7 +27,7 @@ class DeployCommand extends ContainerAwareCommand
             ->setName('plum:deploy')
             ->setDescription('Deploys a project to another server')
             ->addArgument('server', InputArgument::REQUIRED, 'The server name')
-            ->addArgument('deployer', InputArgument::OPTIONAL, 'The deployer name', 'rsync')
+            ->addArgument('deployers', InputArgument::OPTIONAL, 'A list of deployer name', 'rsync')
             ->setHelp(<<<EOF
 The <info>project:deploy</info> command deploys a project on a server:
 
@@ -53,23 +55,30 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $server   = $input->getArgument('server');
-        $deployer = $input->getArgument('deployer');
-        $plum     = $this->getContainer()->get('madalynn.plum');
-        $options  = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
+        $server    = $input->getArgument('server');
+        $deployers = explode(',', $input->getArgument('deployers'));
+        $plum      = $this->getContainer()->get('madalynn.plum');
+        $options   = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
 
+        foreach ($deployers as $deployer) {
+            $this->deploy($plum, $server, trim($deployer), $options, $output);
+        }
+    }
+
+    protected function deploy(Plum $plum, $server, $deployer, $options, OutputInterface $output)
+    {
         if (isset($options['dry_run']) && $options['dry_run']) {
             $dryrun = '<comment>(dry run mode)</comment>';
         } else {
             $dryrun = '';
         }
 
-        $output->writeln(sprintf('Starting rsync to <info>%s</info> %s', $server, $dryrun));
+        $output->writeln(sprintf('Starting %s to <info>%s</info> %s', $deployer, $server, $dryrun));
 
         // Let's go!
         $plum->deploy($server, $deployer, $options);
 
-        $output->writeln(sprintf('Successfully rsync to <info>%s</info>', $server));
+        $output->writeln(sprintf('Successfully %s to <info>%s</info>', $deployer, $server));
     }
 }
 
