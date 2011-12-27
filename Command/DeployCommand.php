@@ -57,20 +57,27 @@ EOF
     {
         $server    = $input->getArgument('server');
         $deployers = explode(',', $input->getArgument('deployers'));
-        $plum      = $this->getContainer()->get('madalynn.plum');
-        $options   = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
 
         foreach ($deployers as $deployer) {
-            $this->deploy($plum, $server, trim($deployer), $options, $output);
+            $this->deploy($server, trim($deployer), $output);
         }
     }
 
-    protected function deploy(Plum $plum, $server, $deployer, $options, OutputInterface $output)
+    /**
+     * Deploys the application to another server using a deployer.
+     *
+     * @param string $server   The server name
+     * @param string $deployer The deployer name
+     * @param OutputInterface $output The output object
+     */
+    protected function deploy($server, $deployer, OutputInterface $output)
     {
+        $plum    = $this->getContainer()->get('madalynn.plum');
+        $options = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
+
+        $dryrun = '';
         if (isset($options['dry_run']) && $options['dry_run']) {
             $dryrun = '<comment>(dry run mode)</comment>';
-        } else {
-            $dryrun = '';
         }
 
         $output->writeln(sprintf('Starting %s to <info>%s</info> %s', $deployer, $server, $dryrun));
