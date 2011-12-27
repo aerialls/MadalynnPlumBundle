@@ -24,7 +24,7 @@ class MadalynnPlumExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
-        $configuration = new Configuration();
+        $configuration = new MainConfiguration();
 
         $config = $processor->processConfiguration($configuration, $configs);
 
@@ -33,6 +33,10 @@ class MadalynnPlumExtension extends Extension
 
         $plum = $container->getDefinition('madalynn.plum');
 
+        // Options
+        $plum->addMethodCall('setOptions', array($config['options']));
+
+        // Deployers
         $deployers = $config['deployers'];
         if (0 === count($deployers)) {
             throw new \RuntimeException('You must add at least one deployer.');
@@ -43,28 +47,12 @@ class MadalynnPlumExtension extends Extension
             $name = 'plum.deployer.'.$obj->getName();
 
             $def = $container->register($name, $deployer);
-            $def->setPublic(false);
 
             $plum->addMethodCall('registerDeployer', array($container->findDefinition($name)));
         }
 
-        $servers = $config['servers'];
-        foreach ($servers as $server => $s) {
-            $name = 'plum.server.'.$server;
-
-            $def = $container->register($name, 'Plum\\Server\\Server');
-            $def->addArgument($s['host']);
-            $def->addArgument($s['user']);
-            $def->addArgument($s['dir']);
-            $def->addArgument($s['password']);
-            $def->addArgument($s['port']);
-            $def->setPublic(false);
-
-            $plum->addMethodCall('addServer', array($server, $container->findDefinition($name)));
-
-            // Server options
-            $container->setParameter('plum.server.' . $server . '.options', $s['options']);
-        }
+        // Servers
+        $plum->addMethodCall('loadServers', array($config['servers']));
     }
 
     public function getNamespace()

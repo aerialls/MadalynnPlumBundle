@@ -35,28 +35,53 @@ And add the MadalynnPlumBundle to your Kernel *for the dev/test environment only
         $bundles[] = new Madalynn\Bundle\PlumBundle\MadalynnPlumBundle();
     }
 
-## Configuration example
+## Deployers
 
-    # PlumBundle Configuration
-    madalynn_plum:
-        deployers:
-            - Plum\Deployer\RsyncDeployer
-            - Acme\Deployer\MyCustomDeployer
-        servers:
-            production:
-                host: prod.mywebsite.com
-                user: webuser
-                dir: /var/www/mywebsite
-                port: 2321 # Optional, default 22
-                options :
-                    dry_run: true
-                    rsync_exclude: /path/to/exclude
-            dev:
-                host: dev.mywebsite.com
-                user: webuser
-                dir: /var/www/mywebsite2
+By default, Plum provides 2 providers : `Plum\Deployer\RsyncDeployer` and
+`Plum\Deployer\SshDeployer`. Here are the options for each :
+
+* `Plum\Deployer\RsyncDeployer`
+ * `dry_run`
+ * `rsync_exclude`
+* `Plum\Deployer\SshDeployer`
+ * `dry_run`
+ * `commands`
 
 You can add your own deployer by using the `Plum\Deployer\DeployerInterface`
+interface.
+
+## Configuration example
+
+    # app/config/config_dev.yml
+    madalynn_plum:
+        options: # Global options
+            dry_run: false
+            rsync_exclude: "%kernel.root_dir%/config/rsync_exclude.txt"
+            commands:
+                - 'php app/console cache:clear --env=prod --no-debug'
+        deployers:
+            - Plum\Deployer\RsyncDeployer
+            - Plum\Deployer\SshDeployer
+            - Acme\Deployer\MyCustomDeployer
+        servers: "%kernel.root_dir%/config/deployment.yml"
+
+The aim here is to seperate the servers configration from the rest. It is then
+possible to add the `deployment.yml` to the exclude file.
+
+    # app/config/deployment.yml
+    madalynn_plum_servers:
+        production:
+            host: prod.mywebsite.com
+            user: webuser
+            dir: /var/www/mywebsite
+            port: 2321 # Optional, default 22
+            password: myPaSsWoRd # Just for the SSH deployer
+            options : # Server options, override the globals
+                dry_run: true
+        dev:
+            host: dev.mywebsite.com
+            user: webuser
+            dir: /var/www/mywebsite2
 
 # Start a deploy
 
@@ -64,4 +89,4 @@ You can add your own deployer by using the `Plum\Deployer\DeployerInterface`
 
 You can specify a custom deployer via an extra parameter
 
-    php app/console plum:deploy production rsync
+    php app/console plum:deploy production rsync,ssh

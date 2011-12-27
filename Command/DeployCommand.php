@@ -33,21 +33,20 @@ The <info>plum:deploy</info> command deploys a project on a server:
 
   <info>php app/console plum:deploy production</info>
 
-The server must be configured in <comment>app/config/config_dev.yml</comment>:
+The server must be configured in <comment>app/config/deployment.yml</comment>:
 
-    madalynn_plum:
-        deployers:
-            - Plum\Deployer\RsyncDeployer
-        servers:
-            production:
-                host: www.mywebsite.com
-                port: 22
-                user: julien
-                dir: /var/www/sfblog/
+    madalynn_plum_servers:
+        production:
+            host: www.mywebsite.com
+            port: 22
+            user: julien
+            dir: /var/www/sfblog/
+            options:
+                dry_run: false
 
 To automate the deployment, the task uses rsync over SSH.
 You must configure SSH access with a key or configure the password
-in <comment>app/config/config_dev.yml</comment>.
+in <comment>app/config/deployment.yml</comment>.
 EOF
             )
         ;
@@ -73,7 +72,11 @@ EOF
     protected function deploy($server, $deployer, OutputInterface $output)
     {
         $plum    = $this->getContainer()->get('madalynn.plum');
-        $options = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
+        $globalOptions = $plum->getOptions();
+        $serverOptions = $plum->getServer($server)->getOptions();
+
+        // Merge options
+        $options = array_merge($globalOptions, $serverOptions);
 
         $dryrun = '';
         if (isset($options['dry_run']) && $options['dry_run']) {

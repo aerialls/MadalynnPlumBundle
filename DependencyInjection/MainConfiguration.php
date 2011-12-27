@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+class MainConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
@@ -24,6 +24,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('options')
+                    ->addDefaultsIfNotSet()
+                    ->useAttributeAsKey('name')
+                    ->prototype('variable')
+                    ->end()
+                ->end()
                 ->arrayNode('deployers')
                     ->addDefaultsIfNotSet()
                     ->requiresAtLeastOneElement()
@@ -32,27 +38,13 @@ class Configuration implements ConfigurationInterface
                             ->ifTrue(function ($v) {
                                 $class = new \ReflectionClass($v);
 
-                                return !$class->implementsInterface('Plum\Deployer\DeployerInterface');
+                                return !$class->implementsInterface('Plum\\Deployer\\DeployerInterface');
                             })
                             ->thenInvalid('The deployer %s must implements the Plum\Deployer\DeployerInterface')
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('servers')
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                    ->children()
-                        ->scalarNode('host')->isRequired()->end()
-                        ->scalarNode('port')->defaultValue(22)->end()
-                        ->scalarNode('user')->isRequired()->end()
-                        ->scalarNode('password')->defaultValue(null)->end()
-                        ->scalarNode('dir')->isRequired()->end()
-                        ->arrayNode('options')
-                            ->useAttributeAsKey('name')
-                            ->prototype('variable')
-                            ->end()
-                    ->end()
-                ->end()
+                ->scalarNode('servers')->defaultValue('%kernel.root_dir%/config/deployment.yml')->end()
             ->end();
 
         return $treeBuilder;
