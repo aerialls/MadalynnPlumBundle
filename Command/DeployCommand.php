@@ -29,9 +29,9 @@ class DeployCommand extends ContainerAwareCommand
             ->addArgument('server', InputArgument::REQUIRED, 'The server name')
             ->addArgument('deployers', InputArgument::OPTIONAL, 'A list of deployer name', 'rsync')
             ->setHelp(<<<EOF
-The <info>project:deploy</info> command deploys a project on a server:
+The <info>plum:deploy</info> command deploys a project on a server:
 
-  <info>php app/console project:deploy production</info>
+  <info>php app/console plum:deploy production</info>
 
 The server must be configured in <comment>app/config/config_dev.yml</comment>:
 
@@ -57,20 +57,27 @@ EOF
     {
         $server    = $input->getArgument('server');
         $deployers = explode(',', $input->getArgument('deployers'));
-        $plum      = $this->getContainer()->get('madalynn.plum');
-        $options   = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
 
         foreach ($deployers as $deployer) {
-            $this->deploy($plum, $server, trim($deployer), $options, $output);
+            $this->deploy($server, trim($deployer), $output);
         }
     }
 
-    protected function deploy(Plum $plum, $server, $deployer, $options, OutputInterface $output)
+    /**
+     * Deploys the application to another server using a deployer.
+     *
+     * @param string $server   The server name
+     * @param string $deployer The deployer name
+     * @param OutputInterface $output The output object
+     */
+    protected function deploy($server, $deployer, OutputInterface $output)
     {
+        $plum    = $this->getContainer()->get('madalynn.plum');
+        $options = $this->getContainer()->getParameter('plum.server.' . $server . '.options');
+
+        $dryrun = '';
         if (isset($options['dry_run']) && $options['dry_run']) {
             $dryrun = '<comment>(dry run mode)</comment>';
-        } else {
-            $dryrun = '';
         }
 
         $output->writeln(sprintf('Starting %s to <info>%s</info> %s', $deployer, $server, $dryrun));
