@@ -29,9 +29,9 @@ class DeployCommand extends ContainerAwareCommand
             ->addArgument('server', InputArgument::REQUIRED, 'The server name')
             ->addArgument('deployers', InputArgument::OPTIONAL, 'A list of deployer name', 'rsync')
             ->setHelp(<<<EOF
-The <info>project:deploy</info> command deploys a project on a server:
+The <info>plum:deploy</info> command deploys a project on a server:
 
-  <info>php app/console project:deploy production</info>
+  <info>php app/console plum:deploy production</info>
 
 The server must be configured in <comment>app/config/config_dev.yml</comment>:
 
