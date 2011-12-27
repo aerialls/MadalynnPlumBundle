@@ -38,9 +38,9 @@ class MadalynnPlumExtension extends Extension
             throw new \RuntimeException('You must add at least one deployer.');
         }
 
-        foreach($deployers as $deployer) {
+        foreach ($deployers as $deployer) {
             $obj  = new $deployer();
-            $name = 'plum.deployer.' . $obj->getName();
+            $name = 'plum.deployer.'.$obj->getName();
 
             $def = $container->register($name, $deployer);
             $def->setPublic(false);
@@ -49,8 +49,8 @@ class MadalynnPlumExtension extends Extension
         }
 
         $servers = $config['servers'];
-        foreach($servers as $server => $s) {
-            $name = 'plum.server.' . $server;
+        foreach ($servers as $server => $s) {
+            $name = 'plum.server.'.$server;
 
             $def = $container->register($name, 'Plum\\Server\\Server');
             $def->addArgument($s['host']);
