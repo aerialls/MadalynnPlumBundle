@@ -76,7 +76,7 @@ possible to add the `deployment.yml` to the exclude file.
             dir: /var/www/mywebsite
             port: 2321 # Optional, default 22
             password: myPaSsWoRd # Just for the SSH deployer
-            options : # Server options, override the globals
+            options: # Server options, override the globals
                 dry_run: true
         dev:
             host: dev.mywebsite.com
