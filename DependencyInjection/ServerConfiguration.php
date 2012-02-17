@@ -32,7 +32,6 @@ class ServerConfiguration implements ConfigurationInterface
                 ->scalarNode('password')->defaultValue(null)->end()
                 ->scalarNode('dir')->isRequired()->end()
                 ->arrayNode('options')
-                    ->addDefaultsIfNotSet()
                     ->useAttributeAsKey('name')
                     ->prototype('variable')
                     ->end()

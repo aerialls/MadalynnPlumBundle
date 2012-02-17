@@ -25,13 +25,11 @@ class MainConfiguration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('options')
-                    ->addDefaultsIfNotSet()
                     ->useAttributeAsKey('name')
                     ->prototype('variable')
                     ->end()
                 ->end()
                 ->arrayNode('deployers')
-                    ->addDefaultsIfNotSet()
                     ->requiresAtLeastOneElement()
                     ->prototype('scalar')
                         ->validate()
