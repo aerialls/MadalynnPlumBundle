@@ -63,13 +63,13 @@ interface.
             - Plum\Deployer\RsyncDeployer
             - Plum\Deployer\SshDeployer
             - Acme\Deployer\MyCustomDeployer
-        servers: "%kernel.root_dir%/config/deployment.yml"
+        servers_file: "%kernel.root_dir%/config/deployment.yml"
 
 The aim here is to seperate the servers configration from the rest. It is then
 possible to add the `deployment.yml` to the exclude file.
 
     # app/config/deployment.yml
-    madalynn_plum_servers:
+    servers:
         production:
             host: prod.mywebsite.com
             user: webuser

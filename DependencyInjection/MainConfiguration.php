@@ -42,7 +42,7 @@ class MainConfiguration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->scalarNode('servers')->defaultValue('%kernel.root_dir%/config/deployment.yml')->end()
+                ->scalarNode('servers_file')->defaultValue('%kernel.root_dir%/config/deployment.yml')->end()
             ->end();
 
         return $treeBuilder;

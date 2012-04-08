@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Plum\Server\Server;
+use Plum\Plum;
 
 class ShowServerCommand extends ContainerAwareCommand
 {
@@ -36,18 +37,20 @@ class ShowServerCommand extends ContainerAwareCommand
         $server = $input->getArgument('server');
 
         if (null === $server) {
-            $servers = $plum->getServers();
+            $servers = array_keys($plum->getServers());
         } else {
-            $servers = array($server => $plum->getServer($server));
+            $servers = array($server);
         }
 
-        foreach ($servers as $name => $server) {
-            $this->showServer($name, $server, $output);
+        foreach ($servers as $name) {
+            $this->showServer($plum, $name, $output);
         }
     }
 
-    protected function showServer($name, Server $server, OutputInterface $output)
+    protected function showServer(Plum $plum, $name, OutputInterface $output)
     {
+        $server = $plum->getServer($name);
+
         $password = '';
         if (null !== $server->getPassword()) {
             $password = str_repeat('*', strlen($server->getPassword()));
@@ -60,13 +63,15 @@ class ShowServerCommand extends ContainerAwareCommand
         $output->writeln(sprintf('    > <comment>password</comment>: %s', $password));
         $output->writeln(sprintf('    > <comment>port</comment>:     %s', $server->getPort()));
 
-        $options = $server->getOptions();
+        $options = $plum->getOptions($name);
         if (0 !== count($options)) {
             $output->writeln('    > <comment>options</comment>:');
             foreach ($options as $key => $value) {
-                $output->writeln(sprintf('        > <comment>%s</comment>: %s', $key, (string)$value));
+                $output->writeln(sprintf('        > <comment>%s</comment>: %s', $key, (string) $value));
             }
         }
+
+        $output->writeln('');
     }
 }
 

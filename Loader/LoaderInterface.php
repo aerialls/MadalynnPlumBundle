@@ -16,7 +16,7 @@ interface LoaderInterface
     /**
      * Loads the filename
      *
-     * @return array
+     * @return array List of servers
      */
     function load($filename);
 }

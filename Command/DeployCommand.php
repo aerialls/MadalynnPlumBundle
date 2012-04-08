@@ -33,7 +33,7 @@ The <info>plum:deploy</info> command deploys a project on a server:
 
 The server must be configured in <comment>app/config/deployment.yml</comment>:
 
-    madalynn_plum_servers:
+    servers:
         production:
             host: www.mywebsite.com
             port: 22
@@ -63,18 +63,14 @@ EOF
     /**
      * Deploys the application to another server using a deployer.
      *
-     * @param string $server   The server name
-     * @param string $deployer The deployer name
-     * @param OutputInterface $output The output object
+     * @param string          $server   The server name
+     * @param string          $deployer The deployer name
+     * @param OutputInterface $output   The output object
      */
     protected function deploy($server, $deployer, OutputInterface $output)
     {
         $plum    = $this->getContainer()->get('madalynn.plum');
-        $globalOptions = $plum->getOptions();
-        $serverOptions = $plum->getServer($server)->getOptions();
-
-        // Merge options
-        $options = array_merge($globalOptions, $serverOptions);
+        $options = $plum->getOptions($server);
 
         $dryrun = '';
         if (isset($options['dry_run']) && $options['dry_run']) {

@@ -12,30 +12,34 @@
 namespace Madalynn\Bundle\PlumBundle;
 
 use Madalynn\Bundle\PlumBundle\Loader\LoaderInterface;
-
 use Plum\Plum as BasePlum;
 
 class Plum extends BasePlum
 {
     /**
      * Server loader
+     *
      * @var Madalynn\Bundle\PlumBundle\Loader\LoaderInterface
      */
     protected $loader;
 
+    /**
+     * Constructor
+     *
+     * @param LoaderInterface $loader The loader
+     */
     public function __construct(LoaderInterface $loader)
     {
         $this->loader = $loader;
     }
 
+    /**
+     * Loads servers from an YAML file
+     *
+     * @param string $filename The filaname
+     */
     public function loadServers($filename)
     {
-        $servers = $this->loader->load($filename);
-
-        if (null === $servers) {
-            return;
-        }
-
-        $this->setServers($servers);
+        $this->setServers($this->loader->load($filename));
     }
 }

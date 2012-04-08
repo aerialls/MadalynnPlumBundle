@@ -20,7 +20,7 @@ class ServerConfiguration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('madalynn_plum_servers', 'array');
+        $rootNode = $treeBuilder->root('servers', 'array');
 
         $rootNode
             ->useAttributeAsKey('name')

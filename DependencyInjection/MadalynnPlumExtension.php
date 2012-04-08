@@ -19,11 +19,14 @@ use Symfony\Component\Config\FileLocator;
 
 use Plum\Server\Server;
 
+/**
+ * The Madalynn Plum extension
+ */
 class MadalynnPlumExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
+        $processor     = new Processor();
         $configuration = new MainConfiguration();
 
         $config = $processor->processConfiguration($configuration, $configs);
@@ -46,13 +49,13 @@ class MadalynnPlumExtension extends Extension
             $obj  = new $deployer();
             $name = 'plum.deployer.'.$obj->getName();
 
-            $def = $container->register($name, $deployer);
+            $container->register($name, $deployer);
 
             $plum->addMethodCall('registerDeployer', array($container->findDefinition($name)));
         }
 
         // Servers
-        $plum->addMethodCall('loadServers', array($config['servers']));
+        $plum->addMethodCall('loadServers', array($config['servers_file']));
     }
 
     public function getNamespace()
