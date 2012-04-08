@@ -1,7 +1,7 @@
 {
     "name": "madalynn/plum-bundle",
     "description": "A Symfony2 deploy bundle.",
-    "keywords": ["rsync", "deploy"],
+    "keywords": ["rsync", "deploy", "ssh"],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -9,10 +9,6 @@
             "name": "Julien Brochet",
             "email": "mewt@madalynn.eu",
             "homepage": "http://julien.brochet.me"
-        },
-        {
-            "name": "Sébastien Brochet",
-            "email": "blinkseb@madalynn.eu"
         }
     ],
     "require": {

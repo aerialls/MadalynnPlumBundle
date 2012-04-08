@@ -18,7 +18,13 @@ Or by using Git:
     git clone https://github.com/aerialls/MadalynnPlumBundle.git vendor/bundles/Madalynn/Bundle/PlumBundle
     git clone https://github.com/aerialls/Plum.git vendor/plum
 
-You need to add to your `autoload.php`:
+Or by Composer
+
+    "require": {
+        "madalynn/plum-bundle": "dev-master"
+    },
+
+You need to add to your `autoload.php`: (not necessary if you're using Composer)
 
     // app/autoload.php
     $loader->registerNamespaces(array(
@@ -77,7 +83,7 @@ possible to add the `deployment.yml` to the exclude file.
             port: 2321 # Optional, default 22
             password: myPaSsWoRd # Just for the SSH deployer
             options: # Server options, override the globals
-                dry_run: true
+                dry_run: %kernel.debug%
         dev:
             host: dev.mywebsite.com
             user: webuser
@@ -85,7 +91,7 @@ possible to add the `deployment.yml` to the exclude file.
 
 # Start a deploy
 
-    php app/console plum:deploy production
+    php app/console plum:deploy production --no-debug
 
 You can specify a custom deployer via an extra parameter
 
