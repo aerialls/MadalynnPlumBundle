@@ -51,16 +51,11 @@ class ShowServerCommand extends ContainerAwareCommand
     {
         $server = $plum->getServer($name);
 
-        $password = '';
-        if (null !== $server->getPassword()) {
-            $password = str_repeat('*', strlen($server->getPassword()));
-        }
-
         $output->writeln(sprintf('Informations for <info>%s</info> server:', $name));
         $output->writeln(sprintf('    > <comment>host</comment>:     %s', $server->getHost()));
         $output->writeln(sprintf('    > <comment>dir</comment>:      %s', $server->getDir()));
         $output->writeln(sprintf('    > <comment>user</comment>:     %s', $server->getUser()));
-        $output->writeln(sprintf('    > <comment>password</comment>: %s', $password));
+        $output->writeln(sprintf('    > <comment>password</comment>: %s', $server->getHiddenPassword()));
         $output->writeln(sprintf('    > <comment>port</comment>:     %s', $server->getPort()));
 
         $options = $plum->getOptions($name);
