@@ -52,7 +52,10 @@ By default, Plum provides 2 providers : `Plum\Deployer\RsyncDeployer` and
 * `Plum\Deployer\SshDeployer`
  * `dry_run`
  * `commands`
-
+* `Plum\Deployer\XCopyDeployer` (only Windows)
+ * `xcopy_exclude`
+ * `commands`
+ 
 You can add your own deployer by using the `Plum\Deployer\DeployerInterface`
 interface.
 
@@ -68,6 +71,7 @@ interface.
         deployers:
             - Plum\Deployer\RsyncDeployer
             - Plum\Deployer\SshDeployer
+            - Plum\Deployer\XCopyDeployer
             - Acme\Deployer\MyCustomDeployer
         servers_file: "%kernel.root_dir%/config/deployment.yml"
 

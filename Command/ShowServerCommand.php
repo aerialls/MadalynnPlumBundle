@@ -62,7 +62,14 @@ class ShowServerCommand extends ContainerAwareCommand
         if (0 !== count($options)) {
             $output->writeln('    > <comment>options</comment>:');
             foreach ($options as $key => $value) {
-                $output->writeln(sprintf('        > <comment>%s</comment>: %s', $key, (string) $value));
+            	if (is_array($value)) {
+            		$output->writeln(sprintf('        > <comment>%s</comment>:', $key));
+            		for ($i = 0; $i < count($value); $i++) {
+            			$output->writeln(sprintf('               %3.3d: %s', $i, $value[$i]));
+					}
+            	} else {
+                	$output->writeln(sprintf('        > <comment>%s</comment>: %s', $key, (string) $value));
+            	}
             }
         }
 

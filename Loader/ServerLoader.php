@@ -41,7 +41,7 @@ class ServerLoader implements LoaderInterface
             return array();
         }
 
-        $yaml          = Yaml::parse($filename);
+        $yaml          = Yaml::parse(file_get_contents($filename));
         $config        = $this->container->getParameterBag()->resolveValue($yaml);
         $processor     = new Processor();
         $configuration = new ServerConfiguration();
