@@ -1,23 +1,34 @@
 {
-    "name": "madalynn/plum-bundle",
-    "description": "A Symfony2 deploy bundle.",
-    "keywords": ["rsync", "deploy", "ssh"],
-    "type": "symfony-bundle",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Julien Brochet",
-            "email": "mewt@madalynn.eu",
-            "homepage": "http://julien.brochet.me"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.2",
-        "madalynn/plum": ">=1.1",
-        "symfony/framework-bundle": "3.*"
-    },
-    "autoload": {
-        "psr-0": { "Madalynn\\Bundle\\PlumBundle": "" }
-    },
-    "target-dir": "Madalynn/Bundle/PlumBundle"
+	"name" : "madalynn/plum-bundle",
+	"description" : "A Symfony2 deploy bundle.",
+	"keywords" : [
+		"rsync",
+		"deploy",
+		"ssh"
+	],
+	"type" : "symfony-bundle",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Julien Brochet",
+			"email" : "mewt@madalynn.eu",
+			"homepage" : "http://julien.brochet.me"
+		}
+	],
+	"require" : {
+		"php" : ">=5.3.2",
+		"madalynn/plum" : "dev-master",
+		"symfony/framework-bundle" : "3.*"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Madalynn\\Bundle\\PlumBundle" : ""
+		}
+	},
+	"target-dir" : "Madalynn/Bundle/PlumBundle",
+	"repositories" : [{
+			"type" : "git",
+			"url" : "https://github.com/brodao/MadalynnPlumBundle.git",
+			"name" : "brodao/MadalynnPlumBundle"
+		}
+	]
 }
