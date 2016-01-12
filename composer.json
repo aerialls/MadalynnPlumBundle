@@ -27,8 +27,8 @@
 	"target-dir" : "Madalynn/Bundle/PlumBundle",
 	"repositories" : [{
 			"type" : "git",
-			"url" : "https://github.com/brodao/MadalynnPlumBundle.git",
-			"name" : "brodao/MadalynnPlumBundle"
+			"url" : "https://github.com/brodao/Plum.git",
+			"name" : "brodao/Plum"
 		}
 	]
 }
